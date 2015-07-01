@@ -1,0 +1,17 @@
+<beanio xmlns="http://www.beanio.org/2012/03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.beanio.org/2012/03 http://www.beanio.org/2012/03/mapping.xsd">
+
+	<!-- CSV stream -->
+	<stream name="reportCSVStream" format="csv">
+		<parser>
+			<property name="delimiter" value="," />
+			<property name="whitespaceAllowed" value="true" />
+		</parser>
+		<record name="report" class="com.rave.model.Report">
+			<field name="Date" />
+			<field name="Impressions" />
+			<field name="Clicks" />
+			<field name="Earning" />
+		</record>
+	</stream>
+</beanio>

@@ -1,0 +1,26 @@
+<job id="job-report" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="exampleStep1">
+        <chunk checkpoint-policy="item" skip-limit="2" retry-limit="2" item-count="4">
+			<reader ref="com.rave.batch.BeanIOItemReader">
+				<properties>
+					<property name="filePath" value="cvs/report.csv" />
+					<property name="streamName" value="reportCSVStream" />
+					<property name="mappingFile" value="beanio/mappingFile.xml" />
+				</properties>     
+            </reader>
+
+            <writer ref="com.rave.batch.DatabaseWriter">     
+            </writer>
+            
+            	<skippable-exception-classes>
+				<include
+					class="com.rave.batch.SkipException" />
+			</skippable-exception-classes>
+			<retryable-exception-classes>
+				<include
+					class="com.rave.batch.SkipException" />
+			</retryable-exception-classes>
+			
+        </chunk>       
+    </step>
+</job>
