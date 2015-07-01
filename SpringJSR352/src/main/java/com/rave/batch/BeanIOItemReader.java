@@ -21,37 +21,7 @@ import org.beanio.InvalidRecordException;
 import org.beanio.StreamFactory;
 import org.beanio.UnidentifiedRecordException;
 
-/**
- * An implementation of {@code javax.batch.api.chunk.ItemReader} based on BeanIO. 
- * This reader class handles all data formats that are supported by BeanIO. 
- * Such data formats are fixed length files, CSV files, and XML. It supports 
- * BeanIO mappings and provides restart capability.
- * 
- * <p>All that needs to be done to utilize this class is to define
- * BeanIO reader in the job definition for a particular step in a job.</p>
- * 
- * <p>
- * This BeanIO item reader supports injection of the following properties, as 
- * defined in the job specification language for a particular batch job:
- * 	<ul>	
- * 		<li><b>filePath</b> - the name of the file to read from - 
- * 			the file path must be specified 
- * 		</li> 
- * 		<li><b>streamName</b> - Name of the BeanIO stream defined in 
- * 			BeanIO mapping file. It must be specified.
- * 		</li>
- * 		<li><b>mappingFile</b> - Location of the BeanIO mapping file. 
- * 			It must be specified.
- * 		</li>
- * 		<li><b>encoding</b> - encoding to be used for the read file. 
- * 			It is optional. Default encoding is "UTF-8"
- * 		</li> 
- * 		<li><b>errorHandlerClass</b> - errorHandlerClass to be used for defining. 
- * 			the BeanReader error handler. Default error handler class is:
- * 			 com.deloitte.common.batch.BeanIOItemReaderErrorHandler
- * 		</li> 
- * 	</ul>
- */
+
 public final class BeanIOItemReader implements ItemReader {
 	
 	/**
@@ -98,21 +68,7 @@ public final class BeanIOItemReader implements ItemReader {
 	
 
 	
-	/**
-	 * Constructor that instantiates an instance of the BeanIOItemReader
-	 * 
-	 * @param filePath represents the path and name of the file to read from
-	 * 
-	 * @param streamName represents BeanIO streaming name as defined 
-	 * in the BeanIO mapping file
-	 * 
-	 * @param mappingFile represents BeanIO mapping file
-	 * 
-	 * @param encoding represents encoding of the input file
-	 * 
-	 * @param errorHandlerClass represents the error handler class name
-	 */
-	public BeanIOItemReader(String filePath, String streamName, String mappingFile, 
+public BeanIOItemReader(String filePath, String streamName, String mappingFile, 
 			String encoding) {
 		
 		this.filePath = filePath;
@@ -168,19 +124,7 @@ public final class BeanIOItemReader implements ItemReader {
 		
 	}
 
-	/**
-	 * The readItem method returns the next item for chunk processing
-	 * @see javax.batch.api.chunk.ItemReader#readItem(). In the case of this
-	 * implementation, it reads a single record from the file input using the 
-	 * BeanIO stream. If the end of the stream is reached, null is returned.
-     * 
-     * @return next item or null
-     * @throws UnidentifiedRecordException - 
-     * 				thrown when the record type of the last record read from 
-     * 				a BeanReader could not be determined
-     * @throws InvalidRecordException - 
-     * 				thrown when a record or one of its fields does not pass validation during unmarshalling
-	 */
+
 	@Override
 	public Object readItem() throws InvalidRecordException, UnidentifiedRecordException {
 		
@@ -200,9 +144,6 @@ public final class BeanIOItemReader implements ItemReader {
 		return this.items;
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.batch.api.chunk.ItemReader#close()
-	 */
 	@Override
 	public void close() throws Exception {
 		
@@ -225,12 +166,7 @@ public final class BeanIOItemReader implements ItemReader {
 		items += 1;
 	}
 	
-	/**
-	 * This method validates if the input mappingFile exists and returns the URI path of the mappingFile. 
-	 * 
-	 * @return String or null
-	 * @throws URISyntaxException
-	 */
+
 	private String getMappingFilePath() throws URISyntaxException {
 		
 		String mappingFilePath = null;
@@ -244,16 +180,7 @@ public final class BeanIOItemReader implements ItemReader {
 		}
 		return mappingFilePath;
 	}
-	
-	/**
-	 * This method returns an java.io.File object corresponding to a physical File specified by the 
-	 * filePath variable. If the physical file doesn't exist a BatchRuntimeException is thrown
-	 * 
-	 * @return File
-	 * @throws URISyntaxException
-	 * @throws FileNotFoundException 
-	 * @throws UnsupportedEncodingException 
-	 */
+
 	private BufferedReader openFileForProcessing() throws URISyntaxException, 
 			UnsupportedEncodingException, FileNotFoundException {
 		
