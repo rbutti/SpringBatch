@@ -1,26 +1,49 @@
-<job id="job-report" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
-    <step id="exampleStep1">
-        <chunk checkpoint-policy="item" skip-limit="2" retry-limit="2" item-count="4">
+<job id="job-report" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+	 http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/jobXML_1_0.xsd">
+	<properties>
+		<property name="tempFolder" value="tempFolder" />
+	</properties>
+	<listeners>
+		<listener
+			ref="com.rave.batch.SampleListener" />
+	</listeners>
+	<step id="exampleStep1">
+		<properties>
+			<property name="queryFromId" value="tempFolder" />
+		</properties>
+		<chunk checkpoint-policy="item" retry-limit="20" item-count="4">
 			<reader ref="com.rave.batch.BeanIOItemReader">
 				<properties>
 					<property name="filePath" value="cvs/report.csv" />
 					<property name="streamName" value="reportCSVStream" />
 					<property name="mappingFile" value="beanio/mappingFile.xml" />
-				</properties>     
-            </reader>
+				</properties>
+			</reader>
 
-            <writer ref="com.rave.batch.DatabaseWriter">     
-            </writer>
-            
-            	<skippable-exception-classes>
-				<include
-					class="com.rave.batch.SkipException" />
-			</skippable-exception-classes>
+			<writer ref="com.rave.batch.DatabaseWriter">
+
+			</writer>
 			<retryable-exception-classes>
-				<include
-					class="com.rave.batch.SkipException" />
+				<include class="com.rave.batch.SkipException" />
 			</retryable-exception-classes>
-			
-        </chunk>       
-    </step>
+
+
+
+		</chunk>
+
+
+		<!-- <partition> -->
+		<!-- <mapper -->
+		<!-- ref="gov.state.nextgen.in.batch.nac.chunk.partition.NacRcvPartition"> -->
+		<!-- <properties> -->
+		<!-- <property name="minPartitionSizeValue" value="#{jobProperties['minPartitionSize']}" 
+			/> -->
+		<!-- <property name="numberOfPartitionsValue" value="#{jobProperties['numberOfPartitions']}" 
+			/> -->
+		<!-- </properties> -->
+		<!-- </mapper> -->
+		<!-- </partition> -->
+	</step>
 </job>
