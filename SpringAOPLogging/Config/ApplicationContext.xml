@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+		
+	<bean id="businessClass" class="com.deloitte.service.BusinessClass">
+	</bean>
+
+	<bean id="loggingAspect" class="com.deloitte.aop.LoggingAspect" />
+	<bean id="loggingAop" class="com.deloitte.aop.LoggingAop" />
+<!-- 	<bean id="loggingAspect1" class="com.deloitte.aop.LogginAspectAnnotationDriven" /> -->
+	
+	<!-- Enabling annotation based logging -->
+<!-- 	<aop:aspectj-autoproxy /> -->
+	<aop:config>
+		<aop:aspect ref="loggingAspect">
+			<aop:pointcut id="logPointCut" expression="execution(public * *(..))" />
+			<aop:after-throwing throwing="exception"  pointcut-ref="logPointCut" method="log" />
+		</aop:aspect>
+	</aop:config>
+	
+	Spring - AOP
+	
+	<bean id="businessClassProxy" 
+                 class="org.springframework.aop.framework.ProxyFactoryBean">
+ 
+		<property name="target" ref="businessClass" />
+ 
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAop</value>
+			</list>
+		</property>
+	</bean>
+</beans>
